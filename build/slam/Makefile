@@ -39,47 +39,61 @@ else
   ARCH = sisd
 endif
 
-all: libbreezyslam.$(LIBEXT)
+# Build directory
+BUILDDIR = slambuild
 
-test: breezytest
-	./breezytest
+# Ensure build directory exists
+$(shell mkdir -p $(BUILDDIR))
 
-libbreezyslam.$(LIBEXT): algorithms.o  Scan.o Map.o WheeledRobot.o \
-                         coreslam.o coreslam_$(ARCH).o random.o ziggurat.o
-	g++ -O3 -shared algorithms.o Scan.o Map.o WheeledRobot.o \
-                        coreslam.o coreslam_$(ARCH).o random.o ziggurat.o \
-          -o libbreezyslam.$(LIBEXT) -lm
+all: $(BUILDDIR)/libbreezyslam.$(LIBEXT)
 
-algorithms.o: algorithms.cpp algorithms.hpp Laser.hpp Position.hpp Map.hpp Scan.hpp PoseChange.hpp \
-               WheeledRobot.hpp ./c/coreslam.h 
-	g++ -O3 -I./c -c -Wall $(CFLAGS) algorithms.cpp
+test: $(BUILDDIR)/breezytest
+	./$(BUILDDIR)/breezytest
 
-Scan.o: Scan.cpp Scan.hpp PoseChange.hpp Laser.hpp ./c/coreslam.h
-	g++ -O3 -I./c -c -Wall $(CFLAGS) Scan.cpp
+$(BUILDDIR)/libbreezyslam.$(LIBEXT): $(BUILDDIR)/algorithms.o $(BUILDDIR)/Scan.o $(BUILDDIR)/Map.o \
+                                    $(BUILDDIR)/WheeledRobot.o $(BUILDDIR)/coreslam.o \
+                                    $(BUILDDIR)/coreslam_$(ARCH).o $(BUILDDIR)/random.o $(BUILDDIR)/ziggurat.o
+	g++ -O3 -shared $(BUILDDIR)/algorithms.o $(BUILDDIR)/Scan.o $(BUILDDIR)/Map.o \
+                        $(BUILDDIR)/WheeledRobot.o $(BUILDDIR)/coreslam.o $(BUILDDIR)/coreslam_$(ARCH).o \
+                        $(BUILDDIR)/random.o $(BUILDDIR)/ziggurat.o \
+          -o $(BUILDDIR)/libbreezyslam.$(LIBEXT) -lm
 
-Map.o: Map.cpp Map.hpp Position.hpp Scan.hpp ./c/coreslam.h
-	g++ -O3 -I./c -c -Wall $(CFLAGS) Map.cpp
+$(BUILDDIR)/algorithms.o: algorithms.cpp algorithms.hpp Laser.hpp Position.hpp Map.hpp Scan.hpp PoseChange.hpp \
+                          WheeledRobot.hpp ./c/coreslam.h 
+	g++ -O3 -I./c -c -Wall $(CFLAGS) algorithms.cpp -o $(BUILDDIR)/algorithms.o
 
-WheeledRobot.o: WheeledRobot.cpp WheeledRobot.hpp 
-	g++ -O3 -I./c -c -Wall $(CFLAGS) WheeledRobot.cpp
+$(BUILDDIR)/Scan.o: Scan.cpp Scan.hpp PoseChange.hpp Laser.hpp ./c/coreslam.h
+	g++ -O3 -I./c -c -Wall $(CFLAGS) Scan.cpp -o $(BUILDDIR)/Scan.o
 
-coreslam.o: ./c/coreslam.c ./c/coreslam.h
-	gcc -O3 -c -Wall $(CFLAGS) ./c/coreslam.c
+$(BUILDDIR)/Map.o: Map.cpp Map.hpp Position.hpp Scan.hpp ./c/coreslam.h
+	g++ -O3 -I./c -c -Wall $(CFLAGS) Map.cpp -o $(BUILDDIR)/Map.o
 
-coreslam_$(ARCH).o: ./c/coreslam_$(ARCH).c ./c/coreslam.h
-	gcc -O3 -c -Wall $(CFLAGS) $(SIMD_FLAGS) ./c/coreslam_$(ARCH).c
+$(BUILDDIR)/WheeledRobot.o: WheeledRobot.cpp WheeledRobot.hpp 
+	g++ -O3 -I./c -c -Wall $(CFLAGS) WheeledRobot.cpp -o $(BUILDDIR)/WheeledRobot.o
 
-random.o: ./c/random.c
-	gcc -O3 -c -Wall $(CFLAGS) ./c/random.c
-	
-ziggurat.o: ./c/ziggurat.c
-	gcc -O3 -c -Wall $(CFLAGS) ./c/ziggurat.c
-	
-install: libbreezyslam.$(LIBEXT)
-	cp libbreezyslam.$(LIBEXT) $(LIBDIR)
-	
+$(BUILDDIR)/coreslam.o: ./c/coreslam.c ./c/coreslam.h
+	gcc -O3 -c -Wall $(CFLAGS) ./c/coreslam.c -o $(BUILDDIR)/coreslam.o
+
+$(BUILDDIR)/coreslam_$(ARCH).o: ./c/coreslam_$(ARCH).c ./c/coreslam.h
+	gcc -O3 -c -Wall $(CFLAGS) $(SIMD_FLAGS) ./c/coreslam_$(ARCH).c -o $(BUILDDIR)/coreslam_$(ARCH).o
+
+$(BUILDDIR)/random.o: ./c/random.c
+	gcc -O3 -c -Wall $(CFLAGS) ./c/random.c -o $(BUILDDIR)/random.o
+    
+$(BUILDDIR)/ziggurat.o: ./c/ziggurat.c
+	gcc -O3 -c -Wall $(CFLAGS) ./c/ziggurat.c -o $(BUILDDIR)/ziggurat.o
+    
+install: $(BUILDDIR)/libbreezyslam.$(LIBEXT)
+		mkdir -p build
+		g++ -O3 -c -I ./slambuild log2pgm.cc -o build/log2pgm.o
+		g++ -O3 -o build/log2pgm build/log2pgm.o -L/$(BUILDDIR) -lbreezyslam
+run:./build/log2pgm
+	./build/log2pgm laser_data 0 0 eog laser_data.pgm
+# cp $(BUILDDIR)/libbreezyslam.$(LIBEXT) $(LIBDIR)
+    
 doc:
 	doxygen
 
 clean:
-	rm -rf  libbreezyslam.$(LIBEXT) *.o Documentation \#* *~
+	rm -rf $(BUILDDIR) libbreezyslam.$(LIBEXT) Documentation \#* *~
+	rm -rf build/log2pgm build/log2pgm.o

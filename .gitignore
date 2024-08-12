@@ -1,10 +1,11 @@
 build/amcl/build/**
 
 build/nav/build/**
+build/nav/laser_data.pgm
 
 build/slam/build/**
-build/slam/*.o
-build/slam/laser_data.dat
+build/slam/slambuild/**
+build/slam/laser_data.pgm
 
 build/teb/build/**
 build/teb/path.csv
@@ -12,6 +13,7 @@ build/teb/path.csv
 build/lidar/build/**
 
 build/imu/build/**
+build/imu/out/**
 
 **/target
 

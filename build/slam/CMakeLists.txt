@@ -26,7 +26,7 @@ set(src_test main.cc)
 add_executable(test ${src_test} ${SRC_FILES})
 target_link_libraries(
   test
-  ${CMAKE_CURRENT_SOURCE_DIR}/libbreezyslam.so  # 链接本地的libbreezyslam库
+  ${CMAKE_CURRENT_SOURCE_DIR}/slambuild/libbreezyslam.so  # 链接本地的libbreezyslam库
   $ENV{HOME}/dora/target/release/libdora_node_api_c.a
   pthread
   rt
@@ -38,7 +38,7 @@ set(src_log2pgm log2pgm.cc)
 add_executable(log2pgm ${src_log2pgm} ${SRC_FILES})
 target_link_libraries(
   log2pgm
-  ${CMAKE_CURRENT_SOURCE_DIR}/libbreezyslam.so  # 链接本地的libbreezyslam库
+  ${CMAKE_CURRENT_SOURCE_DIR}/slambuild/libbreezyslam.so  # 链接本地的libbreezyslam库
   $ENV{HOME}/dora/target/release/libdora_node_api_c.a
   pthread
   rt
