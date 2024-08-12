@@ -1,0 +1,12 @@
+nodes:
+  - id: imu
+    custom:
+      source: build/imu/build/test
+      outputs:
+        - data
+  - id: rust-sink
+    build: cargo build -p rust-dataflow-example-sink
+    path: sink/target/debug/rust-dataflow-example-sink
+    inputs:
+      message: imu/data
+

@@ -12,4 +12,6 @@ build/imu/build
 
 **/target
 
-out/
+**/out/
+
+**/**/CMakeLists.txt

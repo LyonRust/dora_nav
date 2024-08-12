@@ -19,7 +19,7 @@ public:
             j["sec"] = sec;
             j["nsec"] = nsec;
             return j;
-        }
+        }   
         static Stamp from_json(const nlohmann::json& j) {
             Stamp stamp;
             stamp.sec = j["sec"];

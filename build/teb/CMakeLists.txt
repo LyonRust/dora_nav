@@ -73,7 +73,7 @@ add_executable(test main.cc)
 target_link_libraries(
     test
     lib_teb
-    ${CMAKE_CURRENT_SOURCE_DIR}/libbreezyslam.so  # 链接本地的libbreezyslam库
+    # ${CMAKE_CURRENT_SOURCE_DIR}/libbreezyslam.so  # 链接本地的libbreezyslam库
     $ENV{HOME}/dora/target/release/libdora_node_api_c.a
     ${SUITESPARSE_LIBRARIES}
     ${G2O_LIBRARIES}
