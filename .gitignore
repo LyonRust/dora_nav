@@ -5,7 +5,7 @@ build/nav/laser_data.pgm
 
 build/slam/build/**
 build/slam/slambuild/**
-build/slam/laser_data.pgm
+build/slam/laser_data.dat
 
 build/teb/build/**
 build/teb/path.csv
