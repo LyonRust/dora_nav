@@ -134,8 +134,8 @@ CMakeFiles/lslidar_cx_driver.dir/clean:
 # Target rules for target CMakeFiles/test.dir
 
 # All Build rule for target.
-CMakeFiles/test.dir/all: CMakeFiles/lslidar_cx_input.dir/all
 CMakeFiles/test.dir/all: CMakeFiles/lslidar_cx_driver.dir/all
+CMakeFiles/test.dir/all: CMakeFiles/lslidar_cx_input.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sunny/dora_nav/build/lidar/build/CMakeFiles --progress-num=5,6 "Built target test"

@@ -14,7 +14,6 @@ include_directories(
     ${YAMLCPP_INCLUDE_DIRS}
     $ENV{HOME}/dora/apis/c/node  # dora的头文件路径 node_api.h
     $ENV{HOME}/dora/apis/c/operator
-    ${CMAKE_CURRENT_SOURCE_DIR}/c # 添加c文件夹作为include目录
 )
 
 # 手动指定库的位置

@@ -1,7 +1,3 @@
-communication:
-  _unstable_local:
-    UnixDomain
-
 nodes:
   - id: lidar
     custom:
