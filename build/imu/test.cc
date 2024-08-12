@@ -87,15 +87,15 @@ int run(void *dora_context)
                 nlohmann::json json_obj = imu.to_json();
                 std::string json_str = json_obj.dump();
                 //printf("%s\n", json_str.c_str());
-                                        const char* char_ptr = json_str.c_str();
-                                        char* non_const_char_ptr = new char[json_str.size() + 1];
-                                        std::memcpy(non_const_char_ptr, char_ptr, json_str.size() + 1);
+                const char* char_ptr = json_str.c_str();
+                char* non_const_char_ptr = new char[json_str.size() + 1];
+                std::memcpy(non_const_char_ptr, char_ptr, json_str.size() + 1);
 
-                                        std::string out_id = "data";
-                                        int result = dora_send_output(dora_context, &out_id[0], out_id.length(), reinterpret_cast<char*>(non_const_char_ptr), json_str.size());vvvv
+                std::string out_id = "data";
+                int result = dora_send_output(dora_context, &out_id[0], out_id.length(), reinterpret_cast<char*>(non_const_char_ptr), json_str.size());
                 if (result != 0)
                 {
-                    std::cerr << "failed to send output" << std::endl;
+                    std::cerr << "failed to send output" << std::endl;      
                     return 1;
                 }
                 message_count++; // 递增消息计数器
