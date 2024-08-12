@@ -3,11 +3,14 @@ build/amcl/build/**
 build/nav/build/**
 
 build/slam/build/**
+build/slam/*.o
+build/slam/laser_data.dat
 
 build/teb/build/**
 build/teb/path.csv
 
 build/lidar/build/**
+
 build/imu/build/**
 
 **/target
